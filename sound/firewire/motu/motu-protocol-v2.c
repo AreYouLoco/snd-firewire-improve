@@ -205,7 +205,7 @@ int snd_motu_protocol_v2_switch_fetching_mode(struct snd_motu *motu,
 		if (enable)
 			data |= V2_CLOCK_FETCH_ENABLE;
 
-		if (motu->spec == &snd_motu_spec_traveler)
+		if (motu->spec == &snd_motu_spec_traveler || motu->spec == &snd_motu_spec_896hd)
 			err = switch_fetching_mode_cyclone(motu, &data, enable);
 		else
 			err = switch_fetching_mode_spartan(motu, &data, enable);
@@ -272,6 +272,15 @@ const struct snd_motu_spec snd_motu_spec_828mk2 = {
 		 SND_MOTU_SPEC_TX_MIDI_2ND_Q,
 	.tx_fixed_pcm_chunks = {14, 14, 0},
 	.rx_fixed_pcm_chunks = {14, 14, 0},
+};
+
+const struct snd_motu_spec snd_motu_spec_896hd = {
+	.name = "896HD",
+	.protocol_version = SND_MOTU_PROTOCOL_V2,
+	.flags = SND_MOTU_SPEC_RX_MIDI_2ND_Q |
+		 SND_MOTU_SPEC_TX_MIDI_2ND_Q,
+	.tx_fixed_pcm_chunks = {14, 14, 8},
+	.rx_fixed_pcm_chunks = {14, 14, 10},
 };
 
 const struct snd_motu_spec snd_motu_spec_traveler = {
