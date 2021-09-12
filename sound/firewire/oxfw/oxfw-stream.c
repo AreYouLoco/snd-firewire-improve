@@ -371,8 +371,10 @@ int snd_oxfw_stream_start_duplex(struct snd_oxfw *oxfw)
 			} else {
 				replay_seq = true;
 
-				if (oxfw->quirks & SND_OXFW_QUIRK_REPLAY_ON_THE_FLY)
+				if (oxfw->quirks & SND_OXFW_QUIRK_REPLAY_ON_THE_FLY) {
 					replay_on_the_fly = true;
+					tx_init_skip_cycles = 1000;
+				}
 			}
 		}
 
