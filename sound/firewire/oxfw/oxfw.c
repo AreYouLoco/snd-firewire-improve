@@ -189,9 +189,13 @@ static int detect_quirks(struct snd_oxfw *oxfw, const struct ieee1394_device_id 
 		// value in 'dbs' field of CIP header against its format information.
 		oxfw->quirks |= SND_OXFW_QUIRK_WRONG_DBS;
 
-		// OXFW971-based models may transfer events by blocking method.
-		if (!(oxfw->quirks & SND_OXFW_QUIRK_JUMBO_PAYLOAD))
-			oxfw->quirks |= SND_OXFW_QUIRK_BLOCKING_TRANSMISSION;
+		// OXFW971-based models may transfer events by blocking method. Additionally, they
+		// may have quirk to transfer invalid sequence of packets in terms of media clock
+		// frequency without receiving initial packets with valid sequence.
+		if (!(oxfw->quirks & SND_OXFW_QUIRK_JUMBO_PAYLOAD)) {
+			oxfw->quirks |= SND_OXFW_QUIRK_BLOCKING_TRANSMISSION |
+			                SND_OXFW_QUIRK_REPLAY_ON_THE_FLY;
+		}
 	}
 
 	return 0;

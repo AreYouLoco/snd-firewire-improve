@@ -346,6 +346,7 @@ int snd_oxfw_stream_start_duplex(struct snd_oxfw *oxfw)
 	if (!amdtp_stream_running(&oxfw->rx_stream)) {
 		unsigned int tx_init_skip_cycles = 0;
 		bool replay_seq = false;
+		bool replay_on_the_fly = false;
 
 		err = start_stream(oxfw, &oxfw->rx_stream);
 		if (err < 0) {
@@ -369,13 +370,16 @@ int snd_oxfw_stream_start_duplex(struct snd_oxfw *oxfw)
 				tx_init_skip_cycles = 400;
 			} else {
 				replay_seq = true;
+
+				if (oxfw->quirks & SND_OXFW_QUIRK_REPLAY_ON_THE_FLY)
+					replay_on_the_fly = true;
 			}
 		}
 
 		// NOTE: The device ignores presentation time expressed by the value of syt field
 		// of CIP header in received packets. The sequence of the number of data blocks per
 		// packet is important for media clock recovery.
-		err = amdtp_domain_start(&oxfw->domain, tx_init_skip_cycles, replay_seq, false);
+		err = amdtp_domain_start(&oxfw->domain, tx_init_skip_cycles, replay_seq, replay_on_the_fly);
 		if (err < 0)
 			goto error;
 

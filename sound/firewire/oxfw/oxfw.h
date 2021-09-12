@@ -50,6 +50,9 @@ enum snd_oxfw_quirk {
 	// the device to process audio data even if the value is invalid in a point of
 	// IEC 61883-1/6.
 	SND_OXFW_QUIRK_IGNORE_NO_INFO_PACKET = 0x10,
+	// Loud Tech Mackie models based on OXFW971 transfers invalid sequence of packet in terms
+	// of media clock frequency without receiving packets.
+	SND_OXFW_QUIRK_REPLAY_ON_THE_FLY = 0x20,
 };
 
 /* This is an arbitrary number for convinience. */
