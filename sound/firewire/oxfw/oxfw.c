@@ -191,10 +191,13 @@ static int detect_quirks(struct snd_oxfw *oxfw, const struct ieee1394_device_id 
 
 		// OXFW971-based models may transfer events by blocking method. Additionally, they
 		// may have quirk to transfer invalid sequence of packets in terms of media clock
-		// frequency without receiving initial packets with valid sequence.
+		// frequency without receiving initial packets with valid sequence. Unless receiving
+		// packets without NOINFO packet, the device transfers mostly half of events in
+		// packets than expected.
 		if (!(oxfw->quirks & SND_OXFW_QUIRK_JUMBO_PAYLOAD)) {
 			oxfw->quirks |= SND_OXFW_QUIRK_BLOCKING_TRANSMISSION |
-			                SND_OXFW_QUIRK_REPLAY_ON_THE_FLY;
+			                SND_OXFW_QUIRK_REPLAY_ON_THE_FLY |
+					SND_OXFW_QUIRK_IGNORE_NO_INFO_PACKET;
 		}
 	}
 
